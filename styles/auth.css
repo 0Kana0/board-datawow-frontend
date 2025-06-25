@@ -1,0 +1,121 @@
+.auth-container {
+  display: flex;
+  background: var(--green500-color);
+  height: 100vh;
+}
+
+.auth-left {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+} 
+.auth-signin {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.auth-signin p {
+  position: absolute;
+  bottom: 100px;
+  font-weight: 600;
+  font-size: 28px;
+  color: var(--white-color);
+  margin-bottom: 40px;
+}
+.auth-form {
+  width: 385px;
+  height: 105px;
+}
+.auth-input {
+  background-color: var(--white-color);
+  padding: 10px 14px;
+  border: 1px solid #F9F9F9;
+  border-radius: 8px; 
+  width: 100%;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+.auth-input::placeholder {
+  color: #A0AFBA
+}
+.auth-button {
+  padding: 10px 16px;
+  background-color: var(--success-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: 8px; 
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  font-size: 16px;
+}
+
+.auth-right {
+  background: var(--green300-color);
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; 
+  border-top-left-radius: 36px;   
+  border-bottom-left-radius: 36px;
+}
+.auth-logo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.auth-logo .auth-link {
+  position: absolute;
+  top: 260px;
+  font-family: "Castoro";
+  font-weight: 400;
+  font-style: italic;
+  font-size: 28px;
+  line-height: 100%;
+  color: var(--white-color);
+}
+
+@media screen and (max-width: 768px) {
+  .auth-container {
+    flex-direction: column-reverse;
+  }
+
+  .auth-left {
+    width: 100%;
+    height: 120%;
+  }
+  .auth-form {
+    width: 345px;
+    height: 105px;
+  }
+  .auth-signin {
+    position: static;
+  }
+  .auth-signin p {
+    position: static;
+  }
+
+  .auth-right {
+    width: 100%;
+    border-top-left-radius: 0px;   
+    border-bottom-left-radius: 36px;
+    border-bottom-right-radius: 36px;
+  }
+  .auth-logo {
+    position: static;
+  }
+  .auth-logo .auth-img {
+    width: 170px;
+    height: 130px;
+  }
+  .auth-logo .auth-link {
+    margin-top: 20px;
+    position: static;
+    font-size: 24px
+  }
+}

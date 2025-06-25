@@ -1,0 +1,53 @@
+.dropdownmodal {
+  position: relative;
+  display: inline-block;
+  z-index: 100000;
+}
+.dropdownmodal-container {
+  display: flex;
+  align-items: center;
+  max-height: 40px;
+  border: 1px solid var(--success-color);
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  gap: 8px;
+  color: var(--success-color)
+}
+
+.dropdownmodal-menu {
+  position: absolute;
+  top: 100%; /* ชิดด้านล่างปุ่ม */
+  left: 0;
+  width: 320px; /* ให้กว้างเท่ากับ .dropdown */
+  display: none;
+  background-color: var(--white-color);
+  border: 1px solid #DADADA;
+  border-radius: 8px;
+  z-index: 200000;
+}
+
+.dropdownmodal-menu.show {
+  display: block;
+}
+
+.dropdownmodal-menu a {
+  display: block;
+  height: 44px;
+  padding: 10px 14px;
+  text-decoration: none;
+  color: #1C1C1C;
+}
+
+.dropdownmodal-menu a:hover {
+  background-color: var(--green100-color);
+}
+
+/* .dropdownmodal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100000;
+} */

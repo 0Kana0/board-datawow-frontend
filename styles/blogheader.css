@@ -1,0 +1,13 @@
+.blogheader-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  margin-bottom: 24px;
+  gap: 20px;
+}
+
+.blogheader-right {
+  display: flex;
+  gap: 10px;
+}
