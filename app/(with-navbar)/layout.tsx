@@ -10,6 +10,8 @@ import { DropdownModalProvider } from "@/hooks/DropdownModalContext";
 import DropdownModalBackdrop from "@/components/modal/dropdownmodalbackdrop";
 import Providers from "../provider";
 import { DeleteModalProvider } from "@/hooks/DeleteModalContext";
+import { CommentModalProvider } from "@/hooks/CommentModalContext";
+import { PostFilterProvider } from "@/hooks/PostFilterContext";
 
 export const metadata: Metadata = {
   title: "Board Website",
@@ -29,15 +31,19 @@ export default function RootLayout({
             <SidebarProvider>
               <DropdownProvider>
                 <ModalProvider>
-                  <DropdownModalProvider>
-                    <Navbar />
-                    <Sidebar />
-                    <DropdownBackdrop />
-                    <DropdownModalBackdrop />
-                    <main className="container">
-                      {children}
-                    </main>
-                  </DropdownModalProvider>
+                  <CommentModalProvider>
+                    <DropdownModalProvider>
+                      <PostFilterProvider>
+                        <Navbar />
+                        <Sidebar />
+                        <DropdownBackdrop />
+                        <DropdownModalBackdrop />
+                        <main className="container">
+                          {children}
+                        </main>
+                      </PostFilterProvider>
+                    </DropdownModalProvider>
+                  </CommentModalProvider>
                 </ModalProvider>
               </DropdownProvider>  
             </SidebarProvider>      

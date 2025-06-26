@@ -4,6 +4,7 @@ import React, { createContext, useContext } from 'react';
 type PostActionContextType = {
   handleSavePost: () => void;
   handleDeletePost: () => void;
+  handleFilterPost: () => void;
 };
 
 const PostActionContext = createContext<PostActionContextType | undefined>(undefined);
@@ -19,14 +20,16 @@ export const usePostAction = () => {
 export const PostActionProvider = ({
   children,
   handleSavePost,
-  handleDeletePost
+  handleDeletePost,
+  handleFilterPost
 }: {
   children: React.ReactNode;
   handleSavePost: () => void;
   handleDeletePost: () => void;
+  handleFilterPost: () => void;
 }) => {
   return (
-    <PostActionContext.Provider value={{ handleSavePost, handleDeletePost }}>
+    <PostActionContext.Provider value={{ handleSavePost, handleDeletePost, handleFilterPost }}>
       {children}
     </PostActionContext.Provider>
   );

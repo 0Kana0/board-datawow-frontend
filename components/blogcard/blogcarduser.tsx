@@ -7,14 +7,34 @@ import { PostGetAll } from '@/types/post'
 import ConfirmDeleteModal from '../modal/deletemodal'
 import { useDeleteModal } from '@/hooks/DeleteModalContext';
 import { useModal } from '@/hooks/ModalContext';
+import { usePostFilterModal } from '@/hooks/PostFilterContext';
 
 type BlogCardProps = {
-  post: PostGetAll
-}
+  post: PostGetAll;
+  searchTerm?: string;
+};
 
-const BlogCardUser: React.FC<BlogCardProps> = ({post}) => {
+
+const BlogCardUser: React.FC<BlogCardProps> = ({post, searchTerm = '' }) => {
   const { openDeleteModal } = useDeleteModal();
   const { openModal } = useModal();
+
+  const { filter } = usePostFilterModal()
+    
+  const highlightText = (text: string, keyword: string) => {
+    if (!keyword) return text;
+    if (keyword.length < 2) return text;
+    const regex = new RegExp(`(${keyword})`, 'gi');
+    const parts = text.split(regex);
+    return parts.map((part, index) =>
+      part.toLowerCase() === keyword.toLowerCase() ? (
+        <span key={index} style={{ backgroundColor: '#C5A365'}}>{part}</span>
+      ) : (
+        part
+      )
+    );
+  };
+
   return (
     <div className='blogcard-container'>
       <div className="blogcard-info">
@@ -45,7 +65,7 @@ const BlogCardUser: React.FC<BlogCardProps> = ({post}) => {
               width={16} 
               height={16} 
               className='blogcarduser-delete' 
-              onClick={() => openDeleteModal(String(post))} 
+              onClick={() => openDeleteModal(String(post.id))} 
             />
           </div>
         </div>
@@ -55,7 +75,7 @@ const BlogCardUser: React.FC<BlogCardProps> = ({post}) => {
       </div>
       <div className="blogcard-detail">
         <div className="blogcard-post">
-          <p className="blogcard-title">{post.title}</p>
+          <p className="blogcard-title">{highlightText(post.title, filter.search)}</p>
           <p className="blogcard-content">{post.content}</p>
         </div>
         <div className='blogcard-comment'>

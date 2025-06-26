@@ -3,12 +3,30 @@ import "../../styles/blogcard.css"
 import { MessageCircle } from 'lucide-react'
 import Image from 'next/image'
 import { PostGetAll } from '@/types/post'
+import { usePostFilterModal } from '@/hooks/PostFilterContext'
 
 type BlogCardProps = {
-  post: PostGetAll
-}
+  post: PostGetAll;
+  searchTerm?: string;
+};
 
-const BlogCard: React.FC<BlogCardProps> = ({post}) => {
+const BlogCard: React.FC<BlogCardProps> = ({ post, searchTerm = '' }) => {
+  const { filter } = usePostFilterModal()
+  
+  const highlightText = (text: string, keyword: string) => {
+    if (!keyword) return text;
+    if (keyword.length < 2) return text;
+    const regex = new RegExp(`(${keyword})`, 'gi');
+    const parts = text.split(regex);
+    return parts.map((part, index) =>
+      part.toLowerCase() === keyword.toLowerCase() ? (
+        <span key={index} style={{ backgroundColor: '#C5A365'}}>{part}</span>
+      ) : (
+        part
+      )
+    );
+  };
+
   return (
     <div className='blogcard-container'>
       <div className="blogcard-info">
@@ -28,7 +46,7 @@ const BlogCard: React.FC<BlogCardProps> = ({post}) => {
       </div>
       <div className="blogcard-detail">
         <div className="blogcard-post">
-          <p className="blogcard-title">{post.title}</p>
+          <p className="blogcard-title">{highlightText(post.title, filter.search)}</p>
           <p className="blogcard-content">{post.content}</p>
         </div>
         <div className='blogcard-comment'>
@@ -37,7 +55,8 @@ const BlogCard: React.FC<BlogCardProps> = ({post}) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
 
 export default BlogCard

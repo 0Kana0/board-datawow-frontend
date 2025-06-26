@@ -6,17 +6,28 @@ import { useDropdown } from '@/hooks/DropdownContext';
 import { CommunityGetAll } from '@/types/community';
 import { useSession } from 'next-auth/react';
 import { findAllCommunity } from '@/server/community';
+import { usePostAction } from '@/hooks/PostActionContext';
 
 const Dropdown = () => {
   const { isOpen, toggle, close } = useDropdown();
 
   const [community, setCommunity] = useState<CommunityGetAll[]>([])
-  const [selectedCommunity, setSelectedCommunity] = useState<number | null>(null)
+  const { filterCommunity, setFilterCommunity } = useDropdown()
+
+  const { handleFilterPost } = usePostAction()
 
   const { data: session } = useSession();
-  useEffect(() => {
+  useEffect(() => { 
     fetchDataCommunity()
   }, [session])
+  useEffect(() => {
+    if (filterCommunity !== null) {
+      handleFilterPost()
+    }
+  }, [filterCommunity])
+
+  console.log(filterCommunity);
+  
   
   const fetchDataCommunity = async () => {
     try {
@@ -40,23 +51,38 @@ const Dropdown = () => {
   return (
     <div className="dropdown">
       <div className='dropdown-container' onClick={toggle}>
-        <p>Community</p>
+        {
+          filterCommunity.communityname ? (
+            <p>{filterCommunity.communityname}</p>
+          ) : (
+            <p>Community</p>
+          )
+        }
         <ChevronDown className='dropdownmodal-chevron' />
       </div>
 
       <div className={`dropdown-menu ${isOpen ? 'show' : ''}`}>
-        {community.map((item) => (
-          <a
-            key={item.id}
-            onClick={(e) => {
-              e.preventDefault()
-              setSelectedCommunity(item.id)
-              close()
-            }}
-          >
-            {item.communityname}
-          </a>
-        ))}
+        {community.map((item) => {
+          const isSelected = filterCommunity.id === item.id;
+
+          return (
+            <a
+              key={item.id}
+              onClick={(e) => {
+                e.preventDefault();
+                setFilterCommunity({
+                  id: item.id,
+                  communityname: item.communityname,
+                });
+                close();
+              }}
+              style={isSelected ? { background: '#D8E9E4' } : undefined}
+            >
+              {item.communityname}
+            </a>
+          );
+        })}
+
       </div>
     </div>
   )

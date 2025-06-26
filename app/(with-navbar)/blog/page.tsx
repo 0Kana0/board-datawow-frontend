@@ -4,6 +4,7 @@ import BlogHeader from '@/components/blogheader/blogheader'
 import DeleteModal from '@/components/modal/deletemodal';
 import PostModal from '@/components/modal/postmodal';
 import { useDeleteModal } from '@/hooks/DeleteModalContext';
+import { useDropdown } from '@/hooks/DropdownContext';
 import { useDropdownModal } from '@/hooks/DropdownModalContext';
 import { useModal } from '@/hooks/ModalContext';
 import { PostActionProvider } from '@/hooks/PostActionContext';
@@ -19,6 +20,7 @@ const BlogPage = () => {
   const { closeDeleteModal, postId } = useDeleteModal();
 
   const { close, selectedCommunity } = useDropdownModal();
+  const { filterCommunity } = useDropdown();
 
   const { data: session } = useSession();
 
@@ -31,17 +33,14 @@ const BlogPage = () => {
       if (session) {
         const token = session?.user?.id
         console.log(token);
+        console.log(filterCommunity.id);
+        
         
         if (!token) {
           throw new Error("Token is undefined");
         }
         const data = await findAllPostByUser(token, Number(session?.user?.id), {
-          // skip: 0,
-          // take: 10,
-          // search: "โต",
-          // sort: "id",
-          // order: "asc",
-          // filter: "nozero"
+          find: Number(filterCommunity.id)
         })
         console.log("ข้อมูลที่ได้:", data)
         setPost(data)
@@ -49,6 +48,7 @@ const BlogPage = () => {
         
     } catch (error) {
       console.error("เกิดข้อผิดพลาดขณะดึงข้อมูล:", error)
+      setPost([])
     }
   }
 
@@ -67,7 +67,7 @@ const BlogPage = () => {
         const result = {
           ...postInfo,
           userId: Number(session?.user?.id),
-          communityId: selectedCommunity,
+          communityId: selectedCommunity.id,
         };
 
         const data = await createPost('dasdad', result);
@@ -80,7 +80,7 @@ const BlogPage = () => {
         const result = {
           ...postInfo,
           userId: Number(session?.user?.id),
-          communityId: selectedCommunity,
+          communityId: selectedCommunity.id,
         };
 
         const data = await updatePost('dasdad', result, editingId);
@@ -113,10 +113,15 @@ const BlogPage = () => {
     close();
   }
 
+  const handleFilterPost = async () => {
+    fetchDataPost()
+  }
+
   return (
     <PostActionProvider 
       handleSavePost={handleSavePost} 
       handleDeletePost={handleDeletePost}
+      handleFilterPost={handleFilterPost}
     >
       <div>
         <BlogHeader />

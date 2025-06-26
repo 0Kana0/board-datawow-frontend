@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import { findAllCommunity } from '@/server/community';
 
 const DropdownModal = () => {
-  const { isOpen, toggle, close, setSelectedCommunity } = useDropdownModal();
+  const { isOpen, toggle, close, setSelectedCommunity, selectedCommunity } = useDropdownModal();
 
   const [community, setCommunity] = useState<CommunityGetAll[]>([])
 
@@ -40,24 +40,37 @@ const DropdownModal = () => {
     <div>
       <div className="dropdownmodal">
         <div className='dropdownmodal-container' onClick={toggle}>
-          <p>Choose a community</p>
+          {
+            selectedCommunity.communityname ? (
+              <p>{selectedCommunity.communityname}</p>
+            ) : (
+              <p>Community</p>
+            )
+          }
           <ChevronDown className='dropdownmodal-chevron' />
         </div>
 
         <div className={`dropdownmodal-menu ${isOpen ? 'show' : ''}`}>
-        {community.map((item) => (
-          <a
-            key={item.id}
-            onClick={(e) => {
-              e.preventDefault()
-              setSelectedCommunity(item.id)
-              close()
-            }}
-          >
-            {item.communityname}
-          </a>
-        ))}
-      </div>
+          {community.map((item) => {
+          const isSelected = selectedCommunity.id === item.id;
+            return (
+              <a
+                key={item.id}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSelectedCommunity({
+                    id: item.id,
+                    communityname: item.communityname,
+                  });
+                  close();
+                }}
+                style={isSelected ? { background: '#D8E9E4' } : undefined}
+              >
+                {item.communityname}
+              </a>
+            );
+          })}
+        </div>
       </div>
     </div>
   )
